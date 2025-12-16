@@ -1,13 +1,37 @@
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useRef } from "react";
+
 const Content = ( {article, length, articleIndex, onSwitch, onNext, onPrev} ) => {
+
+  const headingRef = useRef(null);
+  const paraRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.fromTo(headingRef.current, 
+      { opacity: 1, x: -700 },
+      { opacity: 1, x: 0, duration: 1, ease: "power1.inOut" }
+    )
+
+    
+      gsap.fromTo(paraRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 2, ease: "power1.inOut" }
+      )
+  }, [articleIndex])
+
   return (
     <div 
       className="absolute w-full bottom-0 left-0 text-white p-6 md:pb-15 flex flex-col md:flex-row md:items-end md:justify-between gap-10.5"
     >
       <article className="flex flex-col gap-5 max-w-100 md:max-w-125 lg:max-w-150 group">
-        <h1 className="text-2xl md:text-[26px] lg:text-[44px] font-semibold group-hover:text-primary transition-all duration-300">{article.heading}</h1>
+        <h1 
+          ref={headingRef} 
+          className="text-2xl md:text-[26px] lg:text-[44px] font-semibold group-hover:text-primary transition-all duration-300"
+        >{article.heading}</h1>
 
         <div className="hidden md:flex flex-col gap-7">
-          <p className="text-base">{article.description}</p>
+          <p ref={paraRef} className="text-base">{article.description}</p>
 
           <ul className="flex items-center gap-5">
             <li className="">
@@ -44,7 +68,7 @@ const Content = ( {article, length, articleIndex, onSwitch, onNext, onPrev} ) =>
         </div>
       </article>
 
-      <div className="flex gap-2.5 items-center">
+      <div className="flex gap-2.5 items-center justify-between">
         <div className="flex gap-1">
           { Array.from({length: length}).map((_, index) => {
             return (
@@ -60,7 +84,7 @@ const Content = ( {article, length, articleIndex, onSwitch, onNext, onPrev} ) =>
           }) }
         </div>
 
-        <div className="hidden md:flex gap-2.5">
+        <div className="flex gap-2.5">
           <button 
             type="button"
             aria-label="next slide"

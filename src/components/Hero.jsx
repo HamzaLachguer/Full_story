@@ -9,15 +9,17 @@ const Hero = () => {
   const [articleIndex, setArticleIndex] = useState(0);
   const intervalRef = useRef(null);
 
-  const switchTo = useCallback((i) => setArticleIndex((i + ARTICLES.length) % ARTICLES.length), []);
+  const switchTo = useCallback((i) => {
+    setArticleIndex((i + ARTICLES.length) % ARTICLES.length)
+  }, []);
 
-  const nextArticle = useCallback(() => switchTo(articleIndex + 1), [articleIndex, switchTo]);
-  const prevArticle = useCallback(() => switchTo(articleIndex - 1), [articleIndex, switchTo]);
+  const nextArticle = useCallback(() => setArticleIndex(i => (i + 1) % ARTICLES.length), []);
+  const prevArticle = useCallback(() => setArticleIndex(i => (i - 1 + ARTICLES.length) % ARTICLES.length), []);
 
   useEffect(() => {
     intervalRef.current = setInterval(nextArticle, INTERVAL_DELAY);
     return () => clearInterval(intervalRef.current);
-  })
+  }, [nextArticle])
   
   return (
     <div className="relative h-122.5 md:h-130 lg:h-158.75">
