@@ -25,8 +25,15 @@
   html {
     scroll-behavior: smooth;
   }
+
+  button {
+    all: unset;
+    cursor: pointer;
+  }
 }
 
 @layer components {
-
+  .active {
+    @apply after:content-[""] after:absolute after:bg-primary after:w-0
+  }
 }
